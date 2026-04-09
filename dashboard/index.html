@@ -282,6 +282,36 @@
     font-size: 14px;
   }
 
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .tab {
+    background: none;
+    border: none;
+    padding: 14px 22px;
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab:hover { color: var(--text-dim); }
+  .tab.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .tab-panel .section-label:first-child { margin-top: 0; }
+
   @media (max-width: 768px) {
     .content { padding: 32px 24px; }
     .header { padding: 48px 24px; }
@@ -305,32 +335,14 @@
 
 <div class="content">
 
-<!-- CAPABILITIES -->
-<div class="section-label">Gemini 3.1 Flash Live Capabilities</div>
-<div class="features-grid" style="margin-bottom:32px">
-  <div class="feature-card">
-    <div class="tag">Native</div>
-    <h3>Inherently Multilingual</h3>
-    <p>Supports real-time conversations across 200+ countries. Auto-detects the spoken language and responds naturally. No per-language STT or TTS configuration needed.</p>
-  </div>
-  <div class="feature-card">
-    <div class="tag">Native</div>
-    <h3>Tonal Understanding</h3>
-    <p>Understands not just what you say, but how you say it. Frustration, excitement, confusion are part of the input. Cascaded pipelines lose all tonal information at the STT stage.</p>
-  </div>
-  <div class="feature-card">
-    <div class="tag">Trust & Safety</div>
-    <h3>SynthID Watermarking</h3>
-    <p>All generated audio is imperceptibly watermarked with SynthID for reliable detection of AI-generated content.</p>
-  </div>
-  <div class="feature-card">
-    <div class="tag">Native</div>
-    <h3>Native Voice Generation</h3>
-    <p>Voice output is generated as part of the reasoning process. Tone, pacing, and emphasis match the intent naturally rather than being added by a separate TTS engine.</p>
-  </div>
+<div class="tabs" role="tablist">
+  <button class="tab active" data-tab="findings">Findings</button>
+  <button class="tab" data-tab="gemini">Gemini 3.1 Flash Live</button>
+  <button class="tab" data-tab="cascaded">Cascaded Pipeline</button>
 </div>
 
-<!-- FINDINGS -->
+<!-- FINDINGS PANEL -->
+<div class="tab-panel active" id="panel-findings">
 <div class="section-label">Findings</div>
 <div class="card" style="padding:0;overflow:hidden">
   <table class="comp-table">
@@ -381,37 +393,45 @@
     </tbody>
   </table>
 </div>
+</div>
 
-<!-- ARCHITECTURE -->
+<!-- GEMINI PANEL -->
+<div class="tab-panel" id="panel-gemini">
 <div class="section-label">Architecture</div>
-<div class="arch-grid">
-  <div class="arch-card cascaded">
-    <h3>Cascaded Pipeline</h3>
-    <div class="subtitle">3 models · 3 API calls per turn</div>
-    <div class="pipeline-flow">
-      <span class="pipeline-step transport">Plivo</span>
-      <span class="arrow">→</span>
-      <span class="pipeline-step stt">Deepgram STT</span>
-      <span class="arrow">→</span>
-      <span class="pipeline-step llm">Gemini LLM</span>
-      <span class="arrow">→</span>
-      <span class="pipeline-step tts">TTS</span>
-      <span class="arrow">→</span>
-      <span class="pipeline-step transport">Plivo</span>
-    </div>
-    <p style="font-size:13px;color:var(--text-muted);margin-top:12px">Audio → text → text → audio. Each step waits for the previous one to finish.</p>
+<div class="arch-card native" style="margin-bottom:24px">
+  <h3>Gemini 3.1 Flash Live</h3>
+  <div class="subtitle">1 model · 1 WebSocket connection</div>
+  <div class="pipeline-flow">
+    <span class="pipeline-step transport">Plivo</span>
+    <span class="arrow">→</span>
+    <span class="pipeline-step s2s">Gemini 3.1 Flash Live</span>
+    <span class="arrow">→</span>
+    <span class="pipeline-step transport">Plivo</span>
   </div>
-  <div class="arch-card native">
-    <h3>Gemini 3.1 Flash Live</h3>
-    <div class="subtitle">1 model · 1 WebSocket connection</div>
-    <div class="pipeline-flow">
-      <span class="pipeline-step transport">Plivo</span>
-      <span class="arrow">→</span>
-      <span class="pipeline-step s2s">Gemini 3.1 Flash Live</span>
-      <span class="arrow">→</span>
-      <span class="pipeline-step transport">Plivo</span>
-    </div>
-    <p style="font-size:13px;color:var(--text-muted);margin-top:12px">Audio in, audio out. One model understands speech and generates voice natively.</p>
+  <p style="font-size:13px;color:var(--text-muted);margin-top:12px">Audio in, audio out. One model understands speech and generates voice natively.</p>
+</div>
+
+<div class="section-label">Capabilities</div>
+<div class="features-grid" style="margin-bottom:32px">
+  <div class="feature-card">
+    <div class="tag">Native</div>
+    <h3>Inherently Multilingual</h3>
+    <p>Supports real-time conversations across 200+ countries. Auto-detects the spoken language and responds naturally. No per-language STT or TTS configuration needed.</p>
+  </div>
+  <div class="feature-card">
+    <div class="tag">Native</div>
+    <h3>Tonal Understanding</h3>
+    <p>Understands not just what you say, but how you say it. Frustration, excitement, confusion are part of the input. Cascaded pipelines lose all tonal information at the STT stage.</p>
+  </div>
+  <div class="feature-card">
+    <div class="tag">Trust & Safety</div>
+    <h3>SynthID Watermarking</h3>
+    <p>All generated audio is imperceptibly watermarked with SynthID for reliable detection of AI-generated content.</p>
+  </div>
+  <div class="feature-card">
+    <div class="tag">Native</div>
+    <h3>Native Voice Generation</h3>
+    <p>Voice output is generated as part of the reasoning process. Tone, pacing, and emphasis match the intent naturally rather than being added by a separate TTS engine.</p>
   </div>
 </div>
 
@@ -472,11 +492,6 @@
   <div class="note">When asked about current NBA standings, the agent correctly declined rather than guessing. The system prompt instructs it not to make up facts about current events.</div>
 </div>
 
-<div class="card">
-  <h2>Cascaded Pipeline · English Conversation</h2>
-  <div class="placeholder">Recording coming soon</div>
-</div>
-
 <!-- VOICES -->
 <div class="section-label">Voice Samples</div>
 <div class="card">
@@ -505,7 +520,71 @@
     </div>
   </div>
 </div>
+</div>
+
+<!-- CASCADED PANEL -->
+<div class="tab-panel" id="panel-cascaded">
+<div class="section-label">Architecture</div>
+<div class="arch-card cascaded" style="margin-bottom:24px">
+  <h3>Cascaded Pipeline</h3>
+  <div class="subtitle">3 models · 3 API calls per turn</div>
+  <div class="pipeline-flow">
+    <span class="pipeline-step transport">Plivo</span>
+    <span class="arrow">→</span>
+    <span class="pipeline-step stt">Deepgram STT</span>
+    <span class="arrow">→</span>
+    <span class="pipeline-step llm">Gemini LLM</span>
+    <span class="arrow">→</span>
+    <span class="pipeline-step tts">ElevenLabs TTS</span>
+    <span class="arrow">→</span>
+    <span class="pipeline-step transport">Plivo</span>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted);margin-top:12px">Audio → text → text → audio. Each step waits for the previous one to finish.</p>
+</div>
+
+<div class="section-label">Capabilities</div>
+<div class="features-grid" style="margin-bottom:32px">
+  <div class="feature-card">
+    <div class="tag" style="background:#fbeefe;color:#a821cc;border-color:rgba(205,62,249,0.25)">Modular</div>
+    <h3>Component Swappability</h3>
+    <p>Swap STT, LLM, or TTS providers independently. Pick the best vendor for each stage and change one without touching the others.</p>
+  </div>
+  <div class="feature-card">
+    <div class="tag" style="background:#fbeefe;color:#a821cc;border-color:rgba(205,62,249,0.25)">Modular</div>
+    <h3>Per-Stage Debugging</h3>
+    <p>Each component is observable on its own. Inspect transcripts, prompts, and audio between stages to isolate failures and tune behavior.</p>
+  </div>
+  <div class="feature-card">
+    <div class="tag" style="background:#fbeefe;color:#a821cc;border-color:rgba(205,62,249,0.25)">Modular</div>
+    <h3>Mature Tooling</h3>
+    <p>Each provider has years of production tooling around it. Deepgram, Gemini, and ElevenLabs all expose mature SDKs, dashboards, and observability.</p>
+  </div>
+  <div class="feature-card">
+    <div class="tag" style="background:#fbeefe;color:#a821cc;border-color:rgba(205,62,249,0.25)">Modular</div>
+    <h3>Voice Choice</h3>
+    <p>Pick any TTS voice from any provider. Not limited to what one vendor ships, and easy to match a specific brand persona.</p>
+  </div>
+</div>
+
+<div class="section-label">English Call Recording</div>
+<div class="card">
+  <h2>Cascaded Pipeline · English Conversation</h2>
+  <div class="placeholder">Recording coming soon</div>
+</div>
+</div>
 
 </div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + target));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+
 </body>
 </html>
