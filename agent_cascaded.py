@@ -1,7 +1,7 @@
 """
 Cascaded Pipeline Agent
 ========================
-Parakeet RNNT 1.1B (STT) → Gemini 2.5 Flash (LLM) → ElevenLabs (TTS)
+Deepgram Nova-3 (STT) → Gemini 2.5 Flash (LLM) → ElevenLabs (TTS)
 
 Three separate models, three API calls per turn.
 Uses pipecat with Plivo telephony transport.
@@ -32,15 +32,14 @@ from pipecat.processors.aggregators.llm_response_universal import (
 from pipecat.runner.types import RunnerArguments
 from pipecat.runner.utils import parse_telephony_websocket
 from pipecat.serializers.plivo import PlivoFrameSerializer
+from pipecat.services.deepgram.stt import DeepgramSTTService
 from pipecat.services.elevenlabs.tts import ElevenLabsTTSService
 from pipecat.services.google.llm import GoogleLLMService
-from pipecat.services.nvidia.stt import NvidiaSegmentedSTTService, language_to_nvidia_riva_language
 from pipecat.transports.base_transport import BaseTransport
 from pipecat.transports.websocket.fastapi import (
     FastAPIWebsocketParams,
     FastAPIWebsocketTransport,
 )
-from pipecat.transcriptions.language import Language
 from pipecat.turns.user_stop import SpeechTimeoutUserTurnStopStrategy
 from pipecat.turns.user_turn_strategies import UserTurnStrategies
 
@@ -49,115 +48,23 @@ from metrics_observer import MetricsCollectorObserver
 load_dotenv(override=False)
 
 
-# ---------------------------------------------------------------------------
-# Parakeet STT with extended Indic language support
-# ---------------------------------------------------------------------------
-
-# Pipecat's built-in map only has Hindi. Add Tamil, Bengali, Telugu.
-INDIC_LANGUAGE_MAP = {
-    Language.HI: "hi-IN",
-    Language.HI_IN: "hi-IN",
-    Language.TA: "ta-IN",
-    Language.TA_IN: "ta-IN",
-    Language.BN: "bn-IN",
-    Language.BN_IN: "bn-IN",
-    Language.EN: "en-US",
-    Language.EN_US: "en-US",
-}
+GREETING = "Hello! I'm your personal assistant. How can I help you?"
 
 
-class ParakeetIndicSTTService(NvidiaSegmentedSTTService):
-    """Parakeet RNNT 1.1B with Tamil, Bengali, Telugu support."""
-
-    def language_to_service_language(self, language):
-        return INDIC_LANGUAGE_MAP.get(language) or language_to_nvidia_riva_language(language)
-
-    def _get_language_code(self) -> str:
-        """Return Riva language code string (e.g., 'ta-IN'), not enum."""
-        lang = self._settings.language
-        if lang:
-            mapped = self.language_to_service_language(lang)
-            if mapped:
-                return mapped
-            return str(lang)
-        return "en-US"
-
-    def _create_recognition_config(self):
-        """Override to force string language code and set encoding."""
-        import riva.client
-
-        lang_code = str(self._get_language_code())
-        logger.info(f"Parakeet config: language_code={lang_code}, sample_rate={self.sample_rate}")
-
-        config = riva.client.RecognitionConfig(
-            language_code=lang_code,
-            max_alternatives=1,
-            profanity_filter=self._settings.profanity_filter,
-            enable_automatic_punctuation=self._settings.automatic_punctuation,
-            verbatim_transcripts=self._settings.verbatim_transcripts,
-            audio_channel_count=1,
-        )
-        config.encoding = riva.client.AudioEncoding.LINEAR_PCM
-        config.sample_rate_hertz = self.sample_rate or 16000
-        return config
-
-
-# ---------------------------------------------------------------------------
-# Language config
-# ---------------------------------------------------------------------------
-
-LANGUAGE_CONFIG = {
-    "hi": {
-        "name": "Hindi",
-        "stt_language": Language.HI_IN,
-        "greeting": "नमस्ते! मैं आपकी पर्सनल असिस्टेंट हूँ। मैं आपकी कैसे मदद कर सकती हूँ?",
-        "voice_id": "EXAVITQu4vr4xnSDxMaL",  # Sarah - natural female
-    },
-    "ta": {
-        "name": "Tamil",
-        "stt_language": Language.TA_IN,
-        "greeting": "வணக்கம்! நான் உங்கள் பர்சனல் அசிஸ்டென்ட். நான் உங்களுக்கு எப்படி உதவ முடியும்?",
-        "voice_id": "EXAVITQu4vr4xnSDxMaL",  # Sarah - multilingual
-    },
-    "bn": {
-        "name": "Bengali",
-        "stt_language": Language.BN_IN,
-        "greeting": "নমস্কার! আমি আপনার পার্সোনাল অ্যাসিস্ট্যান্ট। আমি কিভাবে সাহায্য করতে পারি?",
-        "voice_id": "EXAVITQu4vr4xnSDxMaL",  # Sarah - multilingual
-    },
-    "en": {
-        "name": "English",
-        "stt_language": Language.EN_US,
-        "greeting": "Hello! I'm your personal assistant. How can I help you?",
-        "voice_id": "EXAVITQu4vr4xnSDxMaL",  # Sarah
-    },
-}
-
-# Parakeet RNNT 1.1B Multilingual (Indic profile)
-PARAKEET_INDIC_FUNCTION_MAP = {
-    "function_id": "71203149-d3b7-4460-8231-1be2543a1fca",
-    "model_name": "parakeet-1.1b-rnnt-multilingual-asr",
-}
-
-
-def get_system_prompt(language: str) -> str:
-    lang_name = LANGUAGE_CONFIG.get(language, LANGUAGE_CONFIG["hi"])["name"]
+def get_system_prompt() -> str:
     now = datetime.now(timezone.utc)
     return (
-        f"You are a helpful personal assistant on a phone call. "
-        f"You speak {lang_name} fluently.\n"
+        "You are a helpful personal assistant on a phone call.\n"
         f"The current date is {now.strftime('%B %d, %Y')} and time is {now.strftime('%I:%M %p')} UTC.\n\n"
-        f"You can help with:\n"
-        f"- Greeting and casual conversation\n"
-        f"- Math calculations\n"
-        f"- Language help and translations\n"
-        f"- General knowledge you are confident about\n\n"
-        f"Rules:\n"
-        f"- If you are not sure about something, say so honestly. Do not make up facts.\n"
-        f"- Never guess current weather, news, sports scores, or stock prices.\n"
-        f"- Keep responses to 1-2 short sentences. This is a phone call.\n"
-        f"- Always respond in {lang_name} unless asked otherwise.\n"
-        f"- No markdown, bullets, or formatting. Your words will be spoken aloud.\n"
+        "You can help with:\n"
+        "- Greeting and casual conversation\n"
+        "- Math calculations\n"
+        "- General knowledge you are confident about\n\n"
+        "Rules:\n"
+        "- If you are not sure about something, say so honestly. Do not make up facts.\n"
+        "- Never guess current weather, news, sports scores, or stock prices.\n"
+        "- Keep responses to 1-2 short sentences. This is a phone call.\n"
+        "- No markdown, bullets, or formatting. Your words will be spoken aloud.\n"
     )
 
 
@@ -169,27 +76,21 @@ def get_system_prompt(language: str) -> str:
 async def run_bot(
     transport: BaseTransport,
     handle_sigint: bool,
-    language: str = "hi",
     call_id: str | None = None,
 ):
-    lang_config = LANGUAGE_CONFIG.get(language, LANGUAGE_CONFIG["hi"])
-
     session_id = str(uuid.uuid4())
     data_dir = os.path.join(os.path.dirname(__file__), "data", "sessions")
 
     metrics_observer = MetricsCollectorObserver(
         session_id=session_id,
         mode="cascaded",
-        config={"language": language, "stt": "parakeet-rnnt-1.1b", "llm": "gemini-2.5-flash", "tts": "elevenlabs-multilingual-v2"},
+        config={"stt": "deepgram-nova-3", "llm": "gemini-2.5-flash", "tts": "elevenlabs-flash-v2.5"},
         data_dir=data_dir,
     )
 
-    stt = ParakeetIndicSTTService(
-        api_key=os.getenv("NVIDIA_API_KEY", ""),
-        model_function_map=PARAKEET_INDIC_FUNCTION_MAP,
-        params=ParakeetIndicSTTService.InputParams(
-            language=lang_config["stt_language"],
-        ),
+    stt = DeepgramSTTService(
+        api_key=os.getenv("DEEPGRAM_API_KEY", ""),
+        model="nova-3",
     )
 
     llm = GoogleLLMService(
@@ -199,11 +100,11 @@ async def run_bot(
 
     tts = ElevenLabsTTSService(
         api_key=os.getenv("ELEVENLABS_API_KEY", ""),
-        voice_id=lang_config["voice_id"],
+        voice_id=os.getenv("ELEVENLABS_VOICE_ID", ""),
         model="eleven_flash_v2_5",
     )
 
-    messages = [{"role": "system", "content": get_system_prompt(language)}]
+    messages = [{"role": "system", "content": get_system_prompt()}]
     context = LLMContext(messages)
 
     user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
@@ -243,9 +144,9 @@ async def run_bot(
     async def on_client_connected(transport, client):
         if call_id:
             asyncio.create_task(_start_recording(call_id))
-        logger.info(f"Client connected — language={language}, greeting in {lang_config['name']}")
+        logger.info("Client connected")
         await asyncio.sleep(1.5)
-        await task.queue_frames([TTSSpeakFrame(text=lang_config["greeting"])])
+        await task.queue_frames([TTSSpeakFrame(text=GREETING)])
 
     @transport.event_handler("on_client_disconnected")
     async def on_client_disconnected(transport, client):
@@ -346,17 +247,7 @@ async def bot(runner_args: RunnerArguments):
         ),
     )
 
-    # Language from query params (set on Plivo app answer_url) or env fallback
-    ws_path = runner_args.websocket.scope.get("path", "")
-    qs = runner_args.websocket.scope.get("query_string", b"").decode()
-    language = os.getenv("ASR_LANGUAGE", "hi")
-    # Parse ?language=xx from query string if present
-    for part in qs.split("&"):
-        if part.startswith("language="):
-            language = part.split("=", 1)[1]
-            break
-    logger.info(f"Language from request: {language}")
-    await run_bot(transport, runner_args.handle_sigint, language=language, call_id=call_data["call_id"])
+    await run_bot(transport, runner_args.handle_sigint, call_id=call_data["call_id"])
 
 
 if __name__ == "__main__":

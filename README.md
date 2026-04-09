@@ -3,7 +3,7 @@
 Two voice agents, same English use case, compared over real phone calls via Plivo.
 
 - **Native S2S** (`agent_native.py`): one model end to end, **Gemini Live**. Audio in, audio out, no separate STT or TTS.
-- **Cascaded** (`agent_cascaded.py`): three specialized models wired in sequence. NVIDIA Parakeet for speech to text, Google Gemini for the conversation, ElevenLabs for text to speech.
+- **Cascaded** (`agent_cascaded.py`): three specialized models wired in sequence. Deepgram Nova-3 for speech to text, Google Gemini for the conversation, ElevenLabs for text to speech.
 
 Live dashboard with call recordings, transcripts, and the full comparison: https://dashboard-s2s.vercel.app/
 
@@ -18,7 +18,7 @@ Native S2S
 
 Cascaded
 ┌─────────┐     ┌─────────┐     ┌──────────┐     ┌────────┐     ┌────────────┐
-│  Phone  │────▶│  Plivo  │────▶│ Parakeet │────▶│ Gemini │────▶│ ElevenLabs │
+│  Phone  │────▶│  Plivo  │────▶│ Deepgram │────▶│ Gemini │────▶│ ElevenLabs │
 │  Call   │◀────│   WS    │◀────│   STT    │     │  LLM   │     │    TTS     │
 └─────────┘     └─────────┘     └──────────┘     └────────┘     └────────────┘
 ```
@@ -29,7 +29,7 @@ Both agents run on the same Pipecat framework over Plivo's bidirectional WebSock
 
 ```
 agent_native.py       # Gemini Live (single-model S2S)
-agent_cascaded.py     # Parakeet STT + Gemini LLM + ElevenLabs TTS
+agent_cascaded.py     # Deepgram STT + Gemini LLM + ElevenLabs TTS
 metrics_observer.py   # Per-turn pipeline waterfall capture
 scripts/
   make_call.py        # Place an outbound test call via Plivo
@@ -41,7 +41,7 @@ dashboard/            # Static comparison dashboard (deployed to Vercel)
 - Python 3.11+
 - A [Plivo](https://www.plivo.com/) account with a phone number
 - A Google Gemini API key (for both agents)
-- An NVIDIA NIM API key (for the cascaded agent's STT)
+- A Deepgram API key (for the cascaded agent's STT)
 - An ElevenLabs API key (for the cascaded agent's TTS)
 - [ngrok](https://ngrok.com/) to expose the local server to Plivo
 
@@ -60,7 +60,7 @@ dashboard/            # Static comparison dashboard (deployed to Vercel)
    ```bash
    cp .env.example .env
    ```
-   Fill in your Plivo, Google, NVIDIA, and ElevenLabs credentials.
+   Fill in your Plivo, Google, Deepgram, and ElevenLabs credentials.
 
 3. **Start ngrok**
    ```bash
