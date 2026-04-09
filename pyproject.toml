@@ -1,0 +1,17 @@
+[project]
+name = "gemini-s2s"
+version = "0.1.0"
+description = "Gemini Live (native S2S) vs cascaded STT+LLM+TTS pipeline, compared over Plivo telephony"
+requires-python = ">=3.11"
+dependencies = [
+    "pipecat-ai[google,nvidia,elevenlabs,silero]>=0.0.92",
+    "python-dotenv>=1.0.0",
+    "loguru",
+    "httpx",
+    "fastapi",
+    "uvicorn[standard]",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
