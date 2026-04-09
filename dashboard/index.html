@@ -390,6 +390,30 @@
         <td><span class="tag-yes">Yes</span></td>
         <td style="color:var(--text-dim)">Gemini Live watermarks all generated audio for AI content detection.</td>
       </tr>
+      <tr>
+        <td class="feature">Vendor Lock-in / Control</td>
+        <td><span class="tag-good">You own the stack</span></td>
+        <td><span class="tag-partial">Tied to Google</span></td>
+        <td style="color:var(--text-dim)">Cascaded lets you negotiate, swap providers, and absorb pricing or terms changes from any one vendor. Native S2S means one platform owns your voice agent end to end.</td>
+      </tr>
+      <tr>
+        <td class="feature">Latency</td>
+        <td><span class="tag-partial">3 sequential hops</span></td>
+        <td><span class="tag-good">1 WebSocket</span></td>
+        <td style="color:var(--text-dim)">Each cascaded turn waits on STT, then LLM, then TTS in series. Gemini Live keeps a persistent WebSocket and starts generating voice while still processing input.</td>
+      </tr>
+      <tr>
+        <td class="feature">Failure Isolation</td>
+        <td><span class="tag-good">Per-stage</span></td>
+        <td><span class="tag-no">All-or-nothing</span></td>
+        <td style="color:var(--text-dim)">If Deepgram has an outage you can swap STT and keep running. If Gemini Live goes down the entire agent is down with no fallback.</td>
+      </tr>
+      <tr>
+        <td class="feature">Cost Predictability</td>
+        <td><span class="tag-good">Per-stage pricing</span></td>
+        <td><span class="tag-partial">Bundled per-minute</span></td>
+        <td style="color:var(--text-dim)">Cascaded pricing is granular per provider, easier to forecast and optimize. Live API bundles everything into one per-minute meter, harder to model at scale.</td>
+      </tr>
     </tbody>
   </table>
 </div>
