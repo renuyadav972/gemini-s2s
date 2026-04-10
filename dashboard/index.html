@@ -623,8 +623,42 @@
 
 <div class="section-label">English Call Recording</div>
 <div class="card">
-  <h2>Cascaded Pipeline · English Conversation</h2>
-  <div class="placeholder">Recording coming soon</div>
+  <h2>English Conversation</h2>
+  <div class="audio-card cascaded">
+    <div class="label">Deepgram + Gemini + ElevenLabs <span>Rachel voice</span></div>
+    <audio controls src="recordings/cascaded-english.mp3"></audio>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+    <div class="turn">
+      <div class="user">What are all the things that you can help me with?</div>
+      <div class="bot">I can help with greetings and casual conversation, math calculations, and general knowledge that I'm confident about.</div>
+    </div>
+    <div class="turn">
+      <div class="user">What's 523 multiplied by 184?</div>
+      <div class="bot">Five hundred twenty-three multiplied by one hundred eighty-four is ninety-six thousand two hundred thirty-two.</div>
+    </div>
+    <div class="turn">
+      <div class="user">When was Mahatma Gandhi born?</div>
+      <div class="bot">Mahatma Gandhi was born on October 2, 1869.</div>
+    </div>
+    <div class="turn">
+      <div class="user">What's the capital of France?</div>
+      <div class="bot">The capital of France is Paris.</div>
+    </div>
+    <div class="turn">
+      <div class="user">What's the population of New Delhi?</div>
+      <div class="bot">I don't have the exact, up-to-the-minute population of New Delhi.</div>
+    </div>
+    <div class="turn">
+      <div class="user">Do you have a guesstimate?</div>
+      <div class="bot">I'm sorry, I don't give guesstimates for things like population.</div>
+    </div>
+    <div class="turn">
+      <div class="user">Thank you so much for your help.</div>
+      <div class="bot">You're very welcome! Is there anything else I can help you with today?</div>
+    </div>
+  </div>
+  <div class="note">Same system prompt as the Gemini Live agent. Both declined to guess on population figures. The cascaded pipeline took noticeably longer between turns due to three sequential API hops.</div>
 </div>
 </div>
 

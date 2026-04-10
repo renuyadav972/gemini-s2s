@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+gemini_s2s.egg-info/PKG-INFO
+gemini_s2s.egg-info/SOURCES.txt
+gemini_s2s.egg-info/dependency_links.txt
+gemini_s2s.egg-info/requires.txt
+gemini_s2s.egg-info/top_level.txt

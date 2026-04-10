@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: gemini-s2s
+Version: 0.1.0
+Summary: Gemini Live (native S2S) vs cascaded STT+LLM+TTS pipeline, compared over Plivo telephony
+Requires-Python: >=3.11
+Requires-Dist: pipecat-ai[deepgram,elevenlabs,google,silero]>=0.0.92
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: loguru
+Requires-Dist: httpx
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]

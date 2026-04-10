@@ -1,0 +1,6 @@
+pipecat-ai[deepgram,elevenlabs,google,silero]>=0.0.92
+python-dotenv>=1.0.0
+loguru
+httpx
+fastapi
+uvicorn[standard]
