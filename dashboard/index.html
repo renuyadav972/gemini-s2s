@@ -313,6 +313,21 @@
   .tab-panel.active { display: block; }
   .tab-panel .section-label:first-child { margin-top: 0; }
 
+  /* Sub-tabs */
+  .subtabs {
+    display: flex; gap: 6px; margin-bottom: 32px; flex-wrap: wrap;
+  }
+  .subtab {
+    background: var(--surface-2); border: 1px solid var(--border);
+    padding: 9px 18px; border-radius: 9999px;
+    font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+  }
+  .subtab:hover { color: var(--text-dim); border-color: rgba(50,61,254,0.3); }
+  .subtab.active { background: rgba(50,61,254,0.08); color: var(--blue); border-color: var(--blue); }
+  .subpanel { display: none; }
+  .subpanel.active { display: block; }
+
   @media (max-width: 768px) {
     .content { padding: 32px 24px; }
     .header { padding: 48px 24px; }
@@ -422,6 +437,14 @@
 
 <!-- GEMINI PANEL -->
 <div class="tab-panel" id="panel-gemini">
+<div class="subtabs">
+  <button class="subtab active" data-sub="arch">Architecture & Capabilities</button>
+  <button class="subtab" data-sub="multilingual">Multilingual Call</button>
+  <button class="subtab" data-sub="english">English Call</button>
+  <button class="subtab" data-sub="voices">Voice Samples</button>
+</div>
+
+<div class="subpanel active" id="sub-arch">
 <div class="section-label">Architecture</div>
 <div class="arch-card native" style="margin-bottom:24px">
   <h3>Gemini 3.1 Flash Live</h3>
@@ -460,7 +483,9 @@
   </div>
 </div>
 
-<!-- MULTILINGUAL CALL -->
+</div>
+
+<div class="subpanel" id="sub-multilingual">
 <div class="section-label">Multilingual Test · English + Hindi + Spanish</div>
 <div class="card">
   <h2>Seamless Language Switching</h2>
@@ -489,7 +514,9 @@
   <div class="note">The caller switched freely between English, Spanish, and Hindi within the same sentence. Gemini Live matched the language of the question in its response, code-switching naturally between Hindi and English ("teen main formats hote hain: Test matches, One-Day Internationals"). No language configuration on our side.</div>
 </div>
 
-<!-- ENGLISH CALL -->
+</div>
+
+<div class="subpanel" id="sub-english">
 <div class="section-label">English Call Recording</div>
 <div class="card">
   <h2>Gemini 3.1 Flash Live · English Conversation</h2>
@@ -517,7 +544,9 @@
   <div class="note">When asked about current NBA standings, the agent correctly declined rather than guessing. The system prompt instructs it not to make up facts about current events.</div>
 </div>
 
-<!-- VOICES -->
+</div>
+
+<div class="subpanel" id="sub-voices">
 <div class="section-label">Voice Samples</div>
 <div class="card">
   <h2>5 Built-in Voices Tested Over Real Phone Calls</h2>
@@ -544,6 +573,7 @@
       <audio controls src="recordings/voice-aoede.mp3"></audio>
     </div>
   </div>
+</div>
 </div>
 </div>
 
@@ -607,6 +637,13 @@
       document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b === btn));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + target));
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+  document.querySelectorAll('.subtab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.sub;
+      btn.closest('.tab-panel').querySelectorAll('.subtab').forEach(b => b.classList.toggle('active', b === btn));
+      btn.closest('.tab-panel').querySelectorAll('.subpanel').forEach(p => p.classList.toggle('active', p.id === 'sub-' + target));
     });
   });
 </script>
