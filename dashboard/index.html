@@ -20,8 +20,8 @@
     --border: #e5e7eb;
     --border-hover: #cbd0db;
     --text: #0b0f2c;
-    --text-dim: #4b5168;
-    --text-muted: #8a90a8;
+    --text-dim: #2d3260;
+    --text-muted: #5b21b6;
     --shadow-sm: 0 1px 2px rgba(11,15,44,0.05);
     --shadow: 0 1px 3px rgba(11,15,44,0.08), 0 1px 2px rgba(11,15,44,0.04);
     --shadow-md: 0 4px 12px rgba(11,15,44,0.06);
@@ -89,27 +89,27 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .header p { color: var(--text-dim); font-size: 17px; max-width: 700px; line-height: 1.65; position: relative; }
+  .header p { color: #3b3f5c; font-size: 18px; max-width: 700px; line-height: 1.65; position: relative; }
   .badges { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; position: relative; }
   .badge {
     font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 9999px;
     background: #ffffff; border: 1px solid var(--border);
-    color: var(--text-dim); box-shadow: var(--shadow-sm);
+    color: #3b3f5c; box-shadow: var(--shadow-sm);
   }
   .badge.gemini { background: rgba(50,61,254,0.08); border-color: rgba(50,61,254,0.25); color: var(--blue); }
   .badge.cascaded { background: rgba(205,62,249,0.08); border-color: rgba(205,62,249,0.25); color: #a821cc; }
   .badge.plivo { background: rgba(86,202,244,0.12); border-color: rgba(86,202,244,0.35); color: #0e6b94; }
-  .badge.vs { background: none; border: none; color: var(--text-muted); padding: 7px 6px; }
+  .badge.vs { background: none; border: none; color: var(--purple); padding: 7px 6px; font-weight: 700; }
 
   .content { padding: 56px 48px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
 
   /* Section labels */
   .section-label {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    color: var(--blue);
     margin-bottom: 18px;
     margin-top: 56px;
     display: flex;
@@ -134,12 +134,12 @@
     box-shadow: var(--shadow-sm);
   }
   .card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-md); }
-  .card h2 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 20px; letter-spacing: -0.01em; }
+  .card h2 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 20px; letter-spacing: -0.01em; }
 
   /* Comparison table */
-  .comp-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+  .comp-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15px; }
   .comp-table th {
-    text-align: left; font-weight: 700; color: var(--blue); font-size: 11px;
+    text-align: left; font-weight: 700; color: var(--blue); font-size: 13px;
     text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 20px;
     background: linear-gradient(90deg, #eef0ff 0%, #ecf9fe 50%, #fbeefe 100%);
     border-bottom: 1px solid rgba(50,61,254,0.15);
@@ -148,24 +148,24 @@
   .comp-table th:last-child { border-top-right-radius: 16px; }
   .comp-table td { padding: 18px 20px; border-top: 1px solid var(--border); vertical-align: top; }
   .comp-table tr:hover td { background: #fafbfd; }
-  .comp-table .feature { font-weight: 600; color: var(--text); font-family: 'Sora', sans-serif; }
+  .comp-table .feature { font-weight: 700; color: var(--text); font-family: 'Sora', sans-serif; font-size: 15px; }
 
   .tag-good {
-    display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;
+    display: inline-block; padding: 5px 14px; border-radius: 8px; font-size: 14px; font-weight: 700;
     background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;
   }
   .tag-partial {
-    display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;
+    display: inline-block; padding: 5px 14px; border-radius: 8px; font-size: 14px; font-weight: 700;
     background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa;
   }
   .tag-ok {
-    display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;
+    display: inline-block; padding: 5px 14px; border-radius: 8px; font-size: 14px; font-weight: 700;
     background: #ecf9fe; color: #0e6b94; border: 1px solid rgba(86,202,244,0.4);
   }
-  .tag-yes { color: #059669; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
-  .tag-yes::before { content: '✓'; font-size: 14px; }
-  .tag-no { color: #dc2626; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
-  .tag-no::before { content: '✕'; font-size: 14px; }
+  .tag-yes { color: #059669; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; }
+  .tag-yes::before { content: '✓'; font-size: 16px; }
+  .tag-no { color: #dc2626; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; }
+  .tag-no::before { content: '✕'; font-size: 16px; }
 
   /* Architecture */
   .arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
@@ -187,19 +187,19 @@
   .arch-card.cascaded::before { background: linear-gradient(90deg, var(--purple), var(--magenta)); }
   .arch-card.native::before { background: linear-gradient(90deg, var(--blue), var(--cyan)); }
   .arch-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
-  .arch-card .subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; }
+  .arch-card .subtitle { font-size: 14px; color: var(--purple); margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
 
   .pipeline-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
   .pipeline-step {
     border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px;
-    font-size: 12px; font-weight: 600; background: var(--surface-2);
+    font-size: 14px; font-weight: 600; background: var(--surface-2);
   }
   .pipeline-step.stt { border-color: rgba(86,202,244,0.5); color: #0e6b94; background: #ecf9fe; }
   .pipeline-step.llm { border-color: rgba(50,61,254,0.4); color: var(--blue); background: #eef0ff; }
   .pipeline-step.tts { border-color: rgba(205,62,249,0.4); color: #a821cc; background: #fbeefe; }
   .pipeline-step.s2s { border-color: rgba(50,61,254,0.5); color: var(--blue); background: #eef0ff; box-shadow: 0 0 24px rgba(50,61,254,0.15); }
   .pipeline-step.transport { border-color: rgba(86,202,244,0.45); color: #0e6b94; background: #ecf9fe; }
-  .arrow { color: var(--text-muted); font-size: 18px; }
+  .arrow { color: var(--blue); font-size: 20px; font-weight: 700; }
 
   /* Audio */
   .audio-card {
@@ -228,10 +228,10 @@
   }
   .turn:hover { border-color: var(--border-hover); }
   .turn:last-child { margin-bottom: 0; }
-  .turn .user { font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text); line-height: 1.6; }
-  .turn .user::before { content: 'USER'; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; padding: 2px 8px; border-radius: 4px; background: #ecf9fe; color: #0e6b94; margin-right: 10px; vertical-align: middle; }
-  .turn .bot { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
-  .turn .bot::before { content: 'BOT'; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; padding: 2px 8px; border-radius: 4px; background: #eef0ff; color: var(--blue); margin-right: 10px; vertical-align: middle; }
+  .turn .user { font-size: 16px; font-weight: 500; margin-bottom: 8px; color: var(--text); line-height: 1.6; }
+  .turn .user::before { content: 'USER'; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 6px; background: #ecf9fe; color: #0e6b94; margin-right: 10px; vertical-align: middle; }
+  .turn .bot { font-size: 16px; color: var(--text); line-height: 1.65; }
+  .turn .bot::before { content: 'BOT'; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 6px; background: #eef0ff; color: var(--blue); margin-right: 10px; vertical-align: middle; }
 
   /* Feature cards */
   .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
@@ -253,18 +253,18 @@
   }
   .feature-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: var(--shadow-md); }
   .feature-card:hover::before { opacity: 1; }
-  .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.01em; }
-  .feature-card p { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
+  .feature-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .feature-card p { font-size: 15px; color: var(--text); line-height: 1.65; }
   .feature-card .tag {
-    display: inline-block; font-size: 10px; font-weight: 700; padding: 4px 10px;
+    display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 12px;
     border-radius: 4px; margin-bottom: 14px; background: #eef0ff;
     color: var(--blue); border: 1px solid rgba(50,61,254,0.25);
     text-transform: uppercase; letter-spacing: 0.08em;
   }
 
   .note {
-    font-size: 14px;
-    color: var(--text-dim);
+    font-size: 15px;
+    color: var(--text);
     margin-top: 20px;
     padding: 16px 20px;
     background: #eef0ff;
@@ -279,8 +279,8 @@
     border-radius: 12px;
     padding: 40px;
     text-align: center;
-    color: var(--text-muted);
-    font-size: 14px;
+    color: var(--blue);
+    font-size: 15px;
   }
 
   /* Tabs */
@@ -298,13 +298,13 @@
     font-family: 'Sora', sans-serif;
     font-size: 15px;
     font-weight: 600;
-    color: var(--text-muted);
+    color: #3b3f5c;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     transition: color 0.2s, border-color 0.2s;
   }
-  .tab:hover { color: var(--text-dim); }
+  .tab:hover { color: var(--text); }
   .tab.active {
     color: var(--blue);
     border-bottom-color: var(--blue);
@@ -321,9 +321,9 @@
     background: var(--surface-2); border: 1px solid var(--border);
     padding: 9px 18px; border-radius: 9999px;
     font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
-    color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+    color: #3b3f5c; cursor: pointer; transition: all 0.15s;
   }
-  .subtab:hover { color: var(--text-dim); border-color: rgba(50,61,254,0.3); }
+  .subtab:hover { color: var(--text); border-color: rgba(50,61,254,0.3); }
   .subtab.active { background: rgba(50,61,254,0.08); color: var(--blue); border-color: var(--blue); }
   .subpanel { display: none; }
   .subpanel.active { display: block; }
@@ -368,67 +368,67 @@
         <td class="feature">Voice Quality</td>
         <td><span class="tag-partial">Depends on TTS</span></td>
         <td><span class="tag-good">Natural</span></td>
-        <td style="color:var(--text-dim)">Gemini Live's voice felt conversational on the phone. The cascaded approach sounds as good as your TTS provider, which varies.</td>
+        <td style="color:#2d3260">Gemini Live's voice felt conversational on the phone. The cascaded approach sounds as good as your TTS provider, which varies.</td>
       </tr>
       <tr>
         <td class="feature">Conversational Flow</td>
         <td><span class="tag-ok">Good</span></td>
         <td><span class="tag-good">Very natural</span></td>
-        <td style="color:var(--text-dim)">Both maintained context across turns. Gemini Live handled turn-taking more smoothly since it processes audio natively.</td>
+        <td style="color:#2d3260">Both maintained context across turns. Gemini Live handled turn-taking more smoothly since it processes audio natively.</td>
       </tr>
       <tr>
         <td class="feature">Multilingual</td>
         <td><span class="tag-partial">Per-language</span></td>
         <td><span class="tag-good">200+ languages</span></td>
-        <td style="color:var(--text-dim)">Cascaded needs separate STT/TTS per language. Gemini Live auto-detects and responds in the caller's language.</td>
+        <td style="color:#2d3260">Cascaded needs separate STT/TTS per language. Gemini Live auto-detects and responds in the caller's language.</td>
       </tr>
       <tr>
         <td class="feature">Tonal Understanding</td>
         <td><span class="tag-no">No</span></td>
         <td><span class="tag-yes">Yes</span></td>
-        <td style="color:var(--text-dim)">STT converts speech to text, losing tone. Gemini Live hears how something is said, not just what.</td>
+        <td style="color:#2d3260">STT converts speech to text, losing tone. Gemini Live hears how something is said, not just what.</td>
       </tr>
       <tr>
         <td class="feature">Integration Complexity</td>
         <td><span class="tag-partial">3 APIs</span></td>
         <td><span class="tag-good">1 API</span></td>
-        <td style="color:var(--text-dim)">Three keys, three SDKs, audio conversion between stages vs one WebSocket connection.</td>
+        <td style="color:#2d3260">Three keys, three SDKs, audio conversion between stages vs one WebSocket connection.</td>
       </tr>
       <tr>
         <td class="feature">Component Swappability</td>
         <td><span class="tag-yes">Yes</span></td>
         <td><span class="tag-no">No</span></td>
-        <td style="color:var(--text-dim)">Cascaded lets you swap STT, LLM, or TTS independently. Native is one model.</td>
+        <td style="color:#2d3260">Cascaded lets you swap STT, LLM, or TTS independently. Native is one model.</td>
       </tr>
       <tr>
         <td class="feature">SynthID Watermarking</td>
         <td><span class="tag-no">No</span></td>
         <td><span class="tag-yes">Yes</span></td>
-        <td style="color:var(--text-dim)">Gemini Live watermarks all generated audio for AI content detection.</td>
+        <td style="color:#2d3260">Gemini Live watermarks all generated audio for AI content detection.</td>
       </tr>
       <tr>
         <td class="feature">Vendor Lock-in / Control</td>
         <td><span class="tag-good">You own the stack</span></td>
         <td><span class="tag-partial">Tied to Google</span></td>
-        <td style="color:var(--text-dim)">Cascaded lets you negotiate, swap providers, and absorb pricing or terms changes from any one vendor. Native S2S means one platform owns your voice agent end to end.</td>
+        <td style="color:#2d3260">Cascaded lets you negotiate, swap providers, and absorb pricing or terms changes from any one vendor. Native S2S means one platform owns your voice agent end to end.</td>
       </tr>
       <tr>
         <td class="feature">Latency</td>
         <td><span class="tag-partial">3 sequential hops</span></td>
         <td><span class="tag-good">1 WebSocket</span></td>
-        <td style="color:var(--text-dim)">Each cascaded turn waits on STT, then LLM, then TTS in series. Gemini Live keeps a persistent WebSocket and starts generating voice while still processing input.</td>
+        <td style="color:#2d3260">Each cascaded turn waits on STT, then LLM, then TTS in series. Gemini Live keeps a persistent WebSocket and starts generating voice while still processing input.</td>
       </tr>
       <tr>
         <td class="feature">Failure Isolation</td>
         <td><span class="tag-good">Per-stage</span></td>
         <td><span class="tag-no">All-or-nothing</span></td>
-        <td style="color:var(--text-dim)">If Deepgram has an outage you can swap STT and keep running. If Gemini Live goes down the entire agent is down with no fallback.</td>
+        <td style="color:#2d3260">If Deepgram has an outage you can swap STT and keep running. If Gemini Live goes down the entire agent is down with no fallback.</td>
       </tr>
       <tr>
         <td class="feature">Cost Predictability</td>
         <td><span class="tag-good">Per-stage pricing</span></td>
         <td><span class="tag-partial">Bundled per-minute</span></td>
-        <td style="color:var(--text-dim)">Cascaded pricing is granular per provider, easier to forecast and optimize. Live API bundles everything into one per-minute meter, harder to model at scale.</td>
+        <td style="color:#2d3260">Cascaded pricing is granular per provider, easier to forecast and optimize. Live API bundles everything into one per-minute meter, harder to model at scale.</td>
       </tr>
     </tbody>
   </table>
@@ -456,7 +456,7 @@
     <span class="arrow">→</span>
     <span class="pipeline-step transport">Plivo</span>
   </div>
-  <p style="font-size:13px;color:var(--text-muted);margin-top:12px">Audio in, audio out. One model understands speech and generates voice natively.</p>
+  <p style="font-size:13px;color:#3b3f5c;margin-top:12px">Audio in, audio out. One model understands speech and generates voice natively.</p>
 </div>
 
 <div class="section-label">Capabilities</div>
@@ -488,9 +488,9 @@
 <div class="subpanel" id="sub-multilingual">
 <div class="section-label">Multilingual Test · English + Hindi + Spanish</div>
 <div class="card">
-  <h2>Seamless Language Switching</h2>
+  <h2>Three Languages, One Call</h2>
   <div class="audio-card native">
-    <div class="label">Three languages in one call <span>Charon voice · Plivo telephony</span></div>
+    <div class="label">English + Hindi + Spanish <span>Charon voice · Plivo</span></div>
     <audio controls src="recordings/multilingual.mp3"></audio>
   </div>
   <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
@@ -511,7 +511,7 @@
       <div class="bot">De nada! Glad I could help. Let me know if you have any other questions!</div>
     </div>
   </div>
-  <div class="note">The caller switched freely between English, Spanish, and Hindi within the same sentence. Gemini Live matched the language of the question in its response, code-switching naturally between Hindi and English ("teen main formats hote hain: Test matches, One-Day Internationals"). No language configuration on our side.</div>
+  <div class="note">The caller mixed three languages within the same sentence. Gemini Live matched each question's language in its reply with zero configuration.</div>
 </div>
 
 </div>
@@ -519,9 +519,9 @@
 <div class="subpanel" id="sub-english">
 <div class="section-label">English Call Recording</div>
 <div class="card">
-  <h2>Gemini 3.1 Flash Live · English Conversation</h2>
+  <h2>English Conversation</h2>
   <div class="audio-card native">
-    <div class="label">Charon voice <span>over Plivo telephony</span></div>
+    <div class="label">Charon voice <span>Plivo telephony</span></div>
     <audio controls src="recordings/native-english.mp3"></audio>
   </div>
   <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
@@ -541,7 +541,7 @@
       <div class="bot">You're welcome! Have a great day.</div>
     </div>
   </div>
-  <div class="note">When asked about current NBA standings, the agent correctly declined rather than guessing. The system prompt instructs it not to make up facts about current events.</div>
+  <div class="note">When asked about current NBA standings, the agent declined rather than guessing. System prompt prevents fabricating current events.</div>
 </div>
 
 </div>
@@ -549,8 +549,8 @@
 <div class="subpanel" id="sub-voices">
 <div class="section-label">Voice Samples</div>
 <div class="card">
-  <h2>5 Built-in Voices Tested Over Real Phone Calls</h2>
-  <p style="font-size:14px;color:var(--text-dim);margin-bottom:22px">The voice is part of the model, not a separate TTS engine. Each sample is from a real call via Plivo.</p>
+  <h2>5 Built-in Voices</h2>
+  <p style="font-size:15px;color:var(--text);margin-bottom:22px">Each sample is from a real phone call via Plivo. The voice is generated by the model, not a separate TTS engine.</p>
   <div style="display:flex;flex-direction:column;gap:10px">
     <div class="audio-card native">
       <div class="label">Charon <span>Male · warm · conversational</span></div>
@@ -594,7 +594,7 @@
     <span class="arrow">→</span>
     <span class="pipeline-step transport">Plivo</span>
   </div>
-  <p style="font-size:13px;color:var(--text-muted);margin-top:12px">Audio → text → text → audio. Each step waits for the previous one to finish.</p>
+  <p style="font-size:13px;color:#3b3f5c;margin-top:12px">Audio → text → text → audio. Each step waits for the previous one to finish.</p>
 </div>
 
 <div class="section-label">Capabilities</div>
